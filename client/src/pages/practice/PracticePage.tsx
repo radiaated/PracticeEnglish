@@ -11,7 +11,7 @@ const PracticePage = () => {
 
   const [text, setText] = useState<string | null>(null);
   const [proWords, setProWords] = useState<Pronounciation | null>(null);
-  const [showPronounciation, setShowPronounciation] = useState<boolean>(false);
+  const [showPronounciation, setShowPronounciation] = useState<boolean>(true);
 
   let [pronounciationAudio, setPronounciationAudio] =
     useState<HTMLAudioElement | null>(null);
