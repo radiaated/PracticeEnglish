@@ -8,7 +8,9 @@ const getPronounciationTextsForWords = async (
     words.map((word) =>
       axios({
         method: "GET",
-        url: import.meta.env.VITE_API_URL + `/pronounciation_text?word=${word}`,
+        url:
+          import.meta.env.VITE_API_URL +
+          `/pronounciation_text?word=${word.toLocaleLowerCase()}`,
       })
     )
   );
