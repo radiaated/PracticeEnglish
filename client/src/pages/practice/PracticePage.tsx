@@ -124,7 +124,7 @@ const PracticePage = () => {
                       className={"pronounciation btn text-light"}
                       onClick={(event) => onPronounceClick(event, word)}
                     >
-                      {proWords[word]}
+                      {proWords[word.toLowerCase()]}
                     </button>
                   )}
                 </span>
