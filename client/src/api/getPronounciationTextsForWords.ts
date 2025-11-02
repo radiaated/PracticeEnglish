@@ -10,7 +10,7 @@ const getPronounciationTextsForWords = async (
         method: "GET",
         url:
           import.meta.env.VITE_API_URL +
-          `/pronounciation_text?word=${word.toLocaleLowerCase()}`,
+          `/pronounciation_text?word=${word.toLowerCase()}`,
       })
     )
   );

@@ -23,7 +23,7 @@ const PracticePage = () => {
   ) => {
     const audio_ = new Audio(
       import.meta.env.VITE_API_URL +
-        `/pronounciation_audio?word=${word.toLocaleLowerCase()}`
+        `/pronounciation_audio?word=${word.toLowerCase()}`
     );
     setPronounciationAudio(audio_);
 
