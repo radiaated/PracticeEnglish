@@ -116,7 +116,7 @@ const PracticePage = () => {
           {text?.split(/\r?\n/).map((paragraph: string, idx_) => (
             <p
               className="d-flex"
-              style={{ flexWrap: "wrap", columnGap: "0.35em" }}
+              style={{ flexWrap: "wrap", gap: "0.35em" }}
               key={idx_}
             >
               {paragraph.split(" ").map((word, idx) => (
