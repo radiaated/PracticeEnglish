@@ -88,7 +88,13 @@ const PracticePage = () => {
   }, [pronounciationAudio]);
 
   return (
-    <div className="centered-box main-container">
+    <div
+      className="centered-box main-container"
+      style={{
+        transform: "translate(-50%, -50%)",
+        maxHeight: "90%",
+      }}
+    >
       <h5 className="w-100 text-center">Response</h5>
 
       <div className="form-check form-switch d-flex w-100 justify-content-end gap-2">
@@ -119,14 +125,17 @@ const PracticePage = () => {
                   className="d-flex flex-column align-items-center"
                 >
                   <span className="word">{word}</span>
-                  {showPronounciation && proWords && proWords[word] && (
-                    <button
-                      className={"pronounciation btn text-light"}
-                      onClick={(event) => onPronounceClick(event, word)}
-                    >
-                      {proWords[word.toLowerCase()]}
-                    </button>
-                  )}
+
+                  {showPronounciation &&
+                    proWords &&
+                    proWords[word.replace(/[.|,]/, "").toLowerCase()] && (
+                      <button
+                        className={"pronounciation btn text-light"}
+                        onClick={(event) => onPronounceClick(event, word)}
+                      >
+                        {proWords[word.replace(/[.|,]/, "").toLowerCase()]}
+                      </button>
+                    )}
                 </span>
               ))}
             </p>
