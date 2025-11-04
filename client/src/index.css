@@ -30,19 +30,26 @@ body {
 
 .word {
   font-size: 1.1rem;
+  margin-top: -0.5em;
 }
 
 .pronounciation {
   font-size: 0.75rem;
   padding: 0;
-  margin-top: -0.5em;
+  margin-top: -0.85em;
   border-radius: 12px;
+  color: gray !important;
 }
 .pronounciation:hover {
   border: 1px solid rgb(89, 89, 89);
   background-color: rgb(89, 89, 89);
+  color: rgb(216, 216, 216) !important;
 }
 
 .pronounciation-playing {
   background-color: rgb(8, 126, 162) !important;
+}
+
+textarea::placeholder {
+  color: white !important;
 }

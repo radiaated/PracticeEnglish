@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 
 import re
 import os
+import json
 
 
 load_dotenv()
@@ -42,30 +43,56 @@ def get_pronounciation_audio(word):
     return r.content or None
 
 
-def get_pronounciation_text(word):
+def get_pronounciation_text_for_words(words):
 
-    soup = getSoupForWord(word=word)
+    pronuns = {}
 
-    a = soup.find(attrs={"class_", "play-pron-v2"})
+    for word in words:
 
-    return a.get_text()
+        try:
+
+            soup = getSoupForWord(word=word)
+
+            a = soup.find(attrs={"class_", "play-pron-v2"})
+
+            pronuns[word] = a.get_text()
+
+        except Exception as e:
+            print(f"[GRACED]: Can't get pronuns for word '{word}'")
+            print("[GRACED] Cause of error: " + str(e))
+
+    return pronuns
 
 
-def get_paragraph(prompt, length, difficulty_level):
+def get_paragraph(prompt, length, difficulty_level, is_new_gen):
 
-    response = google_client.models.generate_content(
-        model="gemini-2.5-pro",
-        contents='For practising speaking english to pronounce, give a %s length paragraph of difficulty level %s that is related to %s. Give the response in JSON: {"paragraph": string<generated_paragraph>, "words_to_pronounce": string[]<words_to_pronounce_except_the_easier_ones_like_too_a_an_the_etc>}'
-        % (length, difficulty_level, prompt),
-    )
+    if is_new_gen:
+
+        response = google_client.models.generate_content(
+            model="gemini-2.5-pro",
+            contents='For practising speaking english to pronounce, give a %s length paragraph of difficulty level %s that is related to %s. Give the response in JSON: {"paragraph": string<generated_paragraph>, "words_to_pronounce": string[]<words_to_pronounce_except_pronouns_auxilliary_verbs_article_words_etc>}'
+            % (length, difficulty_level, prompt),
+        )
+
+    else:
+        response = google_client.models.generate_content(
+            model="gemini-2.5-pro",
+            contents='For practising speaking english to pronounce from the text "%s", Give the response in JSON: {"words_to_pronounce": string[]<words_to_pronounce_except_pronouns_auxilliary_verbs_article_words_etc>}'
+            % (prompt),
+        )
 
     json_regex = re.compile(r"(?:```json)?\s*(\{.*\})\s*(?:```)?", re.DOTALL)
-
     match = json_regex.search(response.text)
 
     if match:
         json_str = match.group(1)
 
-        return json_str
+        json_ = json.loads(json_str)
+
+        if not is_new_gen:
+
+            json_["paragraph"] = prompt
+
+        return json_
 
     return None

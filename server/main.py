@@ -1,13 +1,18 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from typing import List
+from pydantic import BaseModel
 from dotenv import load_dotenv
 
 
-from utils import get_pronounciation_audio, get_pronounciation_text, get_paragraph
+from utils import (
+    get_pronounciation_audio,
+    get_pronounciation_text_for_words,
+    get_paragraph,
+)
 
 import os
-import json
 
 load_dotenv()
 
@@ -37,26 +42,34 @@ def pronounciation_audio(request: Request):
     return Response(content=audio, media_type="audio/mpeg")
 
 
-@app.get("/pronounciation_text")
-def pronounciation_text(request: Request):
-
-    word = request.query_params.get("word")
-
-    pronounication_text = get_pronounciation_text(word=word)
-
-    return {"type": "success", "pronounciation": {word: pronounication_text}}
+class PronounciationBody(BaseModel):
+    words: List[str]
 
 
-@app.get("/paragraph")
-def paragraph(request: Request):
+@app.post("/pronounciation_text")
+def pronounciation_text(pronounciation: PronounciationBody):
 
-    difficulty_level = request.query_params.get("difficulty")
-    prompt = request.query_params.get("prompt")
-    length = request.query_params.get("length")
+    pronounication_texts = get_pronounciation_text_for_words(words=pronounciation.words)
 
-    res = get_paragraph(prompt, length, difficulty_level)
+    return {"type": "success", "pronounciations": pronounication_texts}
 
-    json_ = json.loads(res)
+
+class PromptBody(BaseModel):
+    prompt: str
+    difficultyLevel: str
+    length: str
+    newGen: bool
+
+
+@app.post("/paragraph")
+def paragraph(prompt_body: PromptBody):
+
+    json_ = get_paragraph(
+        prompt=prompt_body.prompt,
+        length=prompt_body.length,
+        difficulty_level=prompt_body.difficultyLevel,
+        is_new_gen=prompt_body.newGen,
+    )
 
     return json_
 

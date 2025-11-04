@@ -16,6 +16,7 @@ const RESPONSE_LENGTHS: ResponseLength[] = ["short", "medium", "long"];
 const GeneratePage = () => {
   const navigate = useNavigate();
   const {
+    watch,
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -28,6 +29,7 @@ const GeneratePage = () => {
     localStorage.removeItem("currentPractice");
     localStorage.removeItem("pronounciations");
     localStorage.setItem("currentPractice", JSON.stringify(data));
+
     navigate("/practice");
   };
 
@@ -38,14 +40,34 @@ const GeneratePage = () => {
         <hr />
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="form-group mb-2">
-            <label htmlFor="prompt">
-              Prompt <span className="text-danger">*</span>
+            <label
+              htmlFor="prompt"
+              className="d-flex gap-2 align-items-center mb-2"
+            >
+              Prompt <span className="text-danger">*</span>{" "}
+              <div className="form-check form-switch d-flex gap-2 align-items-center">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="switchCheckChecked"
+                  {...register("newGen")}
+                  style={{ fontSize: "0.75rem" }}
+                />
+                <label
+                  className="form-check-label"
+                  htmlFor="switchCheckChecked"
+                >
+                  Use AI
+                </label>
+              </div>
             </label>
             <textarea
               disabled={isSubmitting}
               className="form-control bg-secondary text-light"
               {...register("prompt")}
               id="prompt"
+              placeholder={watch("newGen") ? "AI prompt..." : "Text prompt..."}
             />
             {errors.prompt?.message && (
               <div className="form-text text-danger">
