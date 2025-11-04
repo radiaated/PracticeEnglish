@@ -1,5 +1,5 @@
 cd client/
 npm run build
-rm ../server/dist/ -f
+rm ../server/dist/ -rf
 mv dist/ ../server/dist/
 cd ..
