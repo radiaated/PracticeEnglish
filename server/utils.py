@@ -70,14 +70,14 @@ def get_paragraph(prompt, length, difficulty_level, is_new_gen):
 
         response = google_client.models.generate_content(
             model="gemini-2.5-pro",
-            contents='For practising speaking english to pronounce, give a %s length paragraph of difficulty level %s that is related to %s. Give the response in JSON: {"paragraph": string<generated_paragraph>, "words_to_pronounce": string[]<words_to_pronounce_except_pronouns_auxilliary_verbs_article_words_etc>}'
+            contents='For practising speaking english to pronounce, give a %s length paragraph of difficulty level %s that is related to %s. Give the response in JSON: {"paragraph": string<generated_paragraph>, "words_to_pronounce": string[]<words_to_pronounce_except_pronouns_auxilliary_verbs_article_words_etc_convert_all_words_to_lowercase>}'
             % (length, difficulty_level, prompt),
         )
 
     else:
         response = google_client.models.generate_content(
             model="gemini-2.5-pro",
-            contents='For practising speaking english to pronounce from the text "%s", Give the response in JSON: {"words_to_pronounce": string[]<words_to_pronounce_except_pronouns_auxilliary_verbs_article_words_etc>}'
+            contents='For practising speaking english to pronounce from the text "%s", Give the response in JSON: {"words_to_pronounce": string[]<words_to_pronounce_except_pronouns_auxilliary_verbs_article_words_etc_convert_all_words_to_lowercase>}'
             % (prompt),
         )
 
